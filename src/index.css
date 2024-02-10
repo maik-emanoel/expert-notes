@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  .textarea-scrollbar::-webkit-scrollbar {
+    width: 0.3rem;
+  }
+
+  .textarea-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .textarea-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, .2);
+    border-radius: 999px;
+  }
+}
