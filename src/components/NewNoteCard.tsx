@@ -4,7 +4,13 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { toast } from "sonner";
 
 interface NewNoteCardProps {
-  onNoteCreated: (content: string) => void;
+  onNoteCreated: ({
+    title,
+    content,
+  }: {
+    title: string | undefined;
+    content: string;
+  }) => void;
 }
 
 let speechRecognition: SpeechRecognition | null = null;
@@ -12,10 +18,15 @@ let speechRecognition: SpeechRecognition | null = null;
 export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
   const [shouldShowOnboarding, setShouldShowOnboarding] = useState(true);
   const [isRecording, setIsRecording] = useState(false);
+  const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
   function handleStartEditor() {
     setShouldShowOnboarding(false);
+  }
+
+  function handleTitleChanged(e: ChangeEvent<HTMLInputElement>) {
+    setTitle(e.target.value);
   }
 
   function handleContentChanged(e: ChangeEvent<HTMLTextAreaElement>) {
@@ -30,8 +41,9 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
     e.preventDefault();
     if (content === "") return;
 
-    onNoteCreated(content);
+    onNoteCreated({ title, content });
     toast.success("Nota criada com sucesso!");
+    setTitle("");
     setContent("");
     setShouldShowOnboarding(true);
   }
@@ -128,12 +140,24 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
                   .
                 </p>
               ) : (
-                <textarea
-                  autoFocus
-                  className="text-sm leading-6 text-slate-400 bg-transparent resize-none flex-1 outline-none"
-                  onChange={handleContentChanged}
-                  value={content}
-                />
+                <>
+                  <input
+                    type="text"
+                    id="title"
+                    placeholder="Título"
+                    className="bg-transparent outline-none"
+                    value={title}
+                    onChange={handleTitleChanged}
+                  />
+
+                  <textarea
+                    autoFocus
+                    className="text-sm leading-6 text-slate-400 bg-transparent resize-none flex-1 outline-none textarea-scrollbar"
+                    placeholder="Insira sua nota..."
+                    onChange={handleContentChanged}
+                    value={content}
+                  />
+                </>
               )}
             </div>
 
