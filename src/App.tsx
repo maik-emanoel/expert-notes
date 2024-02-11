@@ -2,37 +2,45 @@ import { ChangeEvent, useState } from "react";
 import logo from "./assets/logo-nlw-expert.svg";
 import { NewNoteCard } from "./components/NewNoteCard";
 import { NoteCard } from "./components/NoteCard";
+import { loadNotes, saveNotes } from "./utils/saveNotes";
+import { toast } from "sonner";
 
-interface Note {
+export interface Note {
   id: string;
+  title?: string;
   date: Date;
   content: string;
 }
 
-function loadNotes() {
-  const storedNotes = localStorage.getItem("notes");
-  if (storedNotes !== null) {
-    return JSON.parse(storedNotes);
+interface onNoteEditedProps {
+  noteId: string,
+  noteEdited: {
+    editedTitle: string,
+    editedContent: string
   }
-
-  return [];
 }
 
 export function App() {
   const [search, setSearch] = useState("");
   const [notes, setNotes] = useState<Note[]>(loadNotes());
 
-  function onNoteCreated(content: string) {
+  function onNoteCreated({
+    title,
+    content,
+  }: {
+    title: string | undefined;
+    content: string;
+  }) {
     const newNote = {
       id: crypto.randomUUID(),
+      title,
       date: new Date(),
       content,
     };
 
     const notesArray = [newNote, ...notes];
     setNotes(notesArray);
-
-    localStorage.setItem("notes", JSON.stringify(notesArray));
+    saveNotes(notesArray);
   }
 
   function handleSearch(e: ChangeEvent<HTMLInputElement>) {
@@ -41,14 +49,34 @@ export function App() {
   }
 
   function onDeleteNote(noteId: string) {
-    const updatedNotes = notes.filter(note => note.id !== noteId)
-    setNotes(updatedNotes)
-    localStorage.setItem("notes", JSON.stringify(updatedNotes));
+    const updatedNotes = notes.filter((note) => note.id !== noteId);
+    setNotes(updatedNotes);
+    saveNotes(updatedNotes);
+  }
+
+  function onNoteEdited({noteId, noteEdited}: onNoteEditedProps) {
+    const updatedNotes = notes.map((note) => {
+      if (note.id === noteId) {
+        return {
+          ...note,
+          title: noteEdited.editedTitle,
+          content: noteEdited.editedContent
+        };
+      }
+
+      return note;
+    });
+    
+    toast.success('Nota editada com sucesso!')
+    setNotes(updatedNotes);
+    saveNotes(updatedNotes);
   }
 
   const filteredNotes =
     search !== ""
-      ? notes.filter((note) => note.content.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+      ? notes.filter((note) =>
+          note.content.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+        )
       : notes;
 
   return (
@@ -68,10 +96,19 @@ export function App() {
       <div className="h-px bg-slate-700"></div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[250px]">
-        <NewNoteCard onNoteCreated={onNoteCreated} />
+        <NewNoteCard
+          onNoteCreated={onNoteCreated}
+        />
 
         {filteredNotes.map((note) => {
-          return <NoteCard key={note.id} note={note} onDeleteNote={() => onDeleteNote(note.id)}/>;
+          return (
+            <NoteCard
+              key={note.id}
+              note={note}
+              onDeleteNote={() => onDeleteNote(note.id)}
+              onNoteEdited={(noteId, noteEdited) => onNoteEdited({ noteId, noteEdited })}
+            />
+          );
         })}
       </div>
     </div>
