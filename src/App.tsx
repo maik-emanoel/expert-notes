@@ -13,11 +13,11 @@ export interface Note {
 }
 
 interface onNoteEditedProps {
-  noteId: string,
+  noteId: string;
   noteEdited: {
-    editedTitle: string,
-    editedContent: string
-  }
+    editedTitle: string;
+    editedContent: string;
+  };
 }
 
 export function App() {
@@ -54,29 +54,36 @@ export function App() {
     saveNotes(updatedNotes);
   }
 
-  function onNoteEdited({noteId, noteEdited}: onNoteEditedProps) {
+  function onNoteEdited({ noteId, noteEdited }: onNoteEditedProps) {
     const updatedNotes = notes.map((note) => {
       if (note.id === noteId) {
         return {
           ...note,
           title: noteEdited.editedTitle,
-          content: noteEdited.editedContent
+          content: noteEdited.editedContent,
         };
       }
 
       return note;
     });
-    
-    toast.success('Nota editada com sucesso!')
+
+    toast.success("Nota editada com sucesso!");
     setNotes(updatedNotes);
     saveNotes(updatedNotes);
   }
 
   const filteredNotes =
     search !== ""
-      ? notes.filter((note) =>
-          note.content.toLocaleLowerCase().includes(search.toLocaleLowerCase())
-        )
+      ? notes.filter((note) => {
+          return (
+            note.title
+              ?.toLocaleLowerCase()
+              .includes(search.toLocaleLowerCase()) ||
+            note.content
+              ?.toLocaleLowerCase()
+              .includes(search.toLocaleLowerCase())
+          );
+        })
       : notes;
 
   return (
@@ -96,9 +103,7 @@ export function App() {
       <div className="h-px bg-slate-700"></div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[250px]">
-        <NewNoteCard
-          onNoteCreated={onNoteCreated}
-        />
+        <NewNoteCard onNoteCreated={onNoteCreated} />
 
         {filteredNotes.map((note) => {
           return (
@@ -106,7 +111,9 @@ export function App() {
               key={note.id}
               note={note}
               onDeleteNote={() => onDeleteNote(note.id)}
-              onNoteEdited={(noteId, noteEdited) => onNoteEdited({ noteId, noteEdited })}
+              onNoteEdited={(noteId, noteEdited) =>
+                onNoteEdited({ noteId, noteEdited })
+              }
             />
           );
         })}
