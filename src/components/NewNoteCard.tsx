@@ -21,6 +21,8 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
+  const [open, setOpen] = useState(false);
+
   function handleStartEditor() {
     setShouldShowOnboarding(false);
   }
@@ -94,7 +96,7 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
   }
 
   return (
-    <Dialog.Root>
+    <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger className="rounded-md bg-slate-700 p-5 flex flex-col gap-3 text-left outline-none hover:ring-2 hover:ring-slate-400 focus-visible:ring-2 focus-visible:ring-lime-400">
         <span className="text-sm font-medium text-slate-200">
           Adicionar nota
@@ -147,6 +149,7 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
                     placeholder="Título"
                     className="bg-transparent outline-none"
                     value={title}
+                    maxLength={32}
                     onChange={handleTitleChanged}
                   />
 
@@ -173,7 +176,10 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
             ) : (
               <button
                 type="button"
-                onClick={handleSaveNote}
+                onClick={(e) => {
+                  handleSaveNote(e);
+                  setOpen(false);
+                }}
                 className="w-full bg-lime-400 py-4 text-center text-sm text-lime-950 outline-none font-medium hover:bg-lime-500"
               >
                 Salvar nota

@@ -23,18 +23,20 @@ export function NoteCard({ note, onDeleteNote, onNoteEdited }: NoteCardProps) {
   const [editedTitle, setEditedTitle] = useState(note.title || "");
   const [editedContent, setEditedContent] = useState(note.content);
 
+  const [open, setOpen] = useState(false);
+
   const noteEdited = {
     editedTitle,
     editedContent,
   };
 
   return (
-    <Dialog.Root>
+    <Dialog.Root open={open} onOpenChange={setOpen} >
       <Dialog.Trigger className="flex flex-col rounded-md text-left bg-slate-800 p-5 gap-3 overflow-hidden outline-none relative hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           {note.title && (
             <>
-              <h2 className="font-medium">{note.title}</h2>
+              <h2 className="font-medium overflow-hidden whitespace-nowrap">{note.title}</h2>
               <span className="size-1 rounded-full bg-slate-500" />
             </>
           )}
@@ -78,6 +80,7 @@ export function NoteCard({ note, onDeleteNote, onNoteEdited }: NoteCardProps) {
                   placeholder="Título"
                   className="bg-transparent outline-none"
                   value={editedTitle}
+                  maxLength={32}
                   onChange={(e) => setEditedTitle(e.target.value)}
                 />
 
@@ -98,7 +101,7 @@ export function NoteCard({ note, onDeleteNote, onNoteEdited }: NoteCardProps) {
             {isEditing ? (
               <button
                 className="w-full bg-slate-800 py-4 text-center text-sm text-slate-300 outline-none font-medium group rounded-md"
-                onClick={() => onNoteEdited(note.id, noteEdited)}
+                onClick={() => { onNoteEdited(note.id, noteEdited); setOpen(false); setIsEditing(false) }}
               >
                 Salvar
               </button>
