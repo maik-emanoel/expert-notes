@@ -31,12 +31,14 @@ export function NoteCard({ note, onDeleteNote, onNoteEdited }: NoteCardProps) {
   };
 
   return (
-    <Dialog.Root open={open} onOpenChange={setOpen} >
+    <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger className="flex flex-col rounded-md text-left bg-slate-800 p-5 gap-3 overflow-hidden outline-none relative hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400">
         <div className="flex items-center gap-2 flex-wrap">
           {note.title && (
             <>
-              <h2 className="font-medium overflow-hidden whitespace-nowrap">{note.title}</h2>
+              <h2 className="font-medium overflow-hidden whitespace-nowrap">
+                {note.title}
+              </h2>
               <span className="size-1 rounded-full bg-slate-500" />
             </>
           )}
@@ -58,10 +60,10 @@ export function NoteCard({ note, onDeleteNote, onNoteEdited }: NoteCardProps) {
           </Dialog.Close>
 
           <div className="flex flex-1 flex-col gap-3 p-5">
-            <div className="flex items-center gap-2 text-2xl font-medium">
+            <div className="flex items-center gap-2 text-2xl font-medium flex-wrap">
               {note.title && (
                 <>
-                  <h2>{note.title}</h2>
+                  <h2 className="overflow-hidden whitespace-nowrap text-ellipsis">{note.title}</h2>
                   <span className="size-1 rounded-full bg-slate-500" />
                 </>
               )}
@@ -97,32 +99,40 @@ export function NoteCard({ note, onDeleteNote, onNoteEdited }: NoteCardProps) {
             )}
           </div>
 
-          <div className="flex items-center gap-4 p-2">
+          <div className="flex items-center gap-4 p-2 flex-wrap md:flex-nowrap">
             {isEditing ? (
-              <button
-                className="w-full bg-slate-800 py-4 text-center text-sm text-slate-300 outline-none font-medium group rounded-md"
-                onClick={() => { onNoteEdited(note.id, noteEdited); setOpen(false); setIsEditing(false) }}
-              >
-                Salvar
-              </button>
+              <>
+                <button
+                  className="w-full border border-slate-950 py-4 text-center text-sm text-slate-200 outline-none font-medium rounded-md"
+                  onClick={() => setIsEditing(false)}
+                >
+                  Cancelar
+                </button>
+                <button
+                  className="w-full bg-slate-100 py-4 text-center text-sm text-slate-950 outline-none font-medium group rounded-md"
+                  onClick={() => {
+                    onNoteEdited(note.id, noteEdited);
+                    setOpen(false);
+                    setIsEditing(false);
+                  }}
+                >
+                  Salvar
+                </button>
+              </>
             ) : (
               <>
                 <button
                   type="button"
                   onClick={onDeleteNote}
-                  className="w-full bg-slate-800 py-4 text-center text-sm text-slate-300 outline-none font-medium group rounded-md"
+                  className="w-full py-4 text-center text-sm text-red-400 outline-none font-medium rounded-md border border-red-400 transition duration-200 hover:backdrop-brightness-75"
                 >
-                  Deseja{" "}
-                  <span className="text-red-400 group-hover:underline">
-                    apagar essa nota
-                  </span>
-                  ?
+                  Deseja apagar essa nota?
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setIsEditing(true)}
-                  className="w-full bg-slate-300 py-4 text-center text-sm text-slate-950 outline-none font-medium rounded-md"
+                  className="w-full bg-slate-300 py-4 text-center text-sm text-slate-950 outline-none font-medium rounded-md transition duration-200 hover:brightness-125"
                 >
                   Editar nota
                 </button>
