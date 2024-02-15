@@ -111,13 +111,13 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
         <Dialog.DialogOverlay className="fixed inset-0 bg-black/50" />
 
         <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-screen md:max-w-[640px] md:h-[60vh] md:rounded-md bg-slate-700 flex flex-col outline-none overflow-hidden">
-          <Dialog.Close className="absolute right-2 top-2 bg-slate-800 text-slate-400 rounded-full p-1 hover:text-slate-100">
+          <Dialog.Close className="absolute right-4 top-4 bg-slate-800 text-slate-400 rounded-full p-1 hover:text-slate-100">
             <X size={20} />
           </Dialog.Close>
 
           <form className="h-full flex flex-col">
             <div className="flex flex-1 flex-col gap-3 p-5">
-              <span className="text-sm font-medium text-slate-300">
+              <span className="text-2xl font-medium text-slate-300">
                 Adicionar nota
               </span>
 
