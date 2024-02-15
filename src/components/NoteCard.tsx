@@ -33,18 +33,30 @@ export function NoteCard({ note, onDeleteNote, onNoteEdited }: NoteCardProps) {
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger className="flex flex-col rounded-md text-left bg-slate-800 p-5 gap-3 overflow-hidden outline-none relative hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400">
-        <div className="flex items-center gap-2 flex-wrap">
-          {note.title && (
+        <div className="w-full flex items-center gap-2 overflow-hidden">
+          {note.title ? (
             <>
-              <h2 className="font-medium overflow-hidden whitespace-nowrap">
+              <h2 className="font-medium whitespace-nowrap text-ellipsis overflow-hidden w-max">
                 {note.title}
               </h2>
-              <span className="size-1 rounded-full bg-slate-500" />
+              <div className="flex items-center gap-2">
+                <span className="size-1 rounded-full bg-slate-500 flex-shrink-0" />
+                <span className="w-full text-xs font-medium text-slate-300 whitespace-nowrap flex-shrink-0 first-letter:uppercase">
+                  {formatDistanceToNow(note.date, {
+                    locale: ptBR,
+                    addSuffix: true,
+                  })}
+                </span>
+              </div>
             </>
+          ) : (
+            <span className="text-sm font-medium text-slate-300 first-letter:uppercase">
+              {formatDistanceToNow(note.date, {
+                locale: ptBR,
+                addSuffix: true,
+              })}
+            </span>
           )}
-          <span className="text-sm font-medium text-slate-300 first-letter:uppercase">
-            {formatDistanceToNow(note.date, { locale: ptBR, addSuffix: true })}
-          </span>
         </div>
         <p className="text-sm leading-6 text-slate-400">{note.content}</p>
 
@@ -59,20 +71,31 @@ export function NoteCard({ note, onDeleteNote, onNoteEdited }: NoteCardProps) {
             <X size={20} />
           </Dialog.Close>
 
-          <div className="flex flex-1 flex-col gap-3 p-5">
-            <div className="flex items-center gap-2 text-2xl font-medium flex-wrap">
-              {note.title && (
-                <>
-                  <h2 className="overflow-hidden whitespace-nowrap text-ellipsis">{note.title}</h2>
-                  <span className="size-1 rounded-full bg-slate-500" />
-                </>
-              )}
-              <span className="text-sm font-medium text-slate-300 first-letter:uppercase">
-                {formatDistanceToNow(note.date, {
-                  locale: ptBR,
-                  addSuffix: true,
-                })}
-              </span>
+          <div className="flex flex-1 flex-col gap-3 p-5 pr-10">
+            <div className="flex items-center gap-2 text-2xl font-medium">
+            {note.title ? (
+            <>
+              <h2 className="font-medium whitespace-nowrap text-ellipsis overflow-hidden w-max">
+                {note.title}
+              </h2>
+              <div className="flex items-center gap-2">
+                <span className="size-1 rounded-full bg-slate-500 flex-shrink-0" />
+                <span className="w-full text-xs font-medium text-slate-300 whitespace-nowrap flex-shrink-0 first-letter:uppercase">
+                  {formatDistanceToNow(note.date, {
+                    locale: ptBR,
+                    addSuffix: true,
+                  })}
+                </span>
+              </div>
+            </>
+          ) : (
+            <span className="text-sm font-medium text-slate-300 first-letter:uppercase">
+              {formatDistanceToNow(note.date, {
+                locale: ptBR,
+                addSuffix: true,
+              })}
+            </span>
+          )}
             </div>
             {isEditing ? (
               <>
