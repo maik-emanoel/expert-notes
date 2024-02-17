@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import logo from "./assets/logo-nlw-expert.svg";
 import { NewNoteCard } from "./components/NewNoteCard";
 import { NoteCard } from "./components/NoteCard";
@@ -23,6 +23,12 @@ interface onNoteEditedProps {
 export function App() {
   const [search, setSearch] = useState("");
   const [notes, setNotes] = useState<Note[]>(loadNotes());
+  const inputSearchRef = useRef<null | HTMLInputElement>(null);
+
+  useEffect(() => {
+    handleFocusInput();
+    return () => handleFocusInput();
+  }, []);
 
   function onNoteCreated({
     title,
@@ -72,6 +78,17 @@ export function App() {
     saveNotes(updatedNotes);
   }
 
+  function handleFocusInput() {
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "/" && inputSearchRef.current) {
+        e.preventDefault();
+        inputSearchRef.current.focus();
+      }
+
+      return;
+    });
+  }
+
   const filteredNotes =
     search !== ""
       ? notes.filter((note) => {
@@ -90,14 +107,18 @@ export function App() {
     <div className="mx-auto max-w-6xl my-12 space-y-6 px-5">
       <img src={logo} alt="Logo da NLW Expert" />
 
-      <form className="w-full">
+      <form className="w-full relative">
         <input
           type="text"
+          ref={inputSearchRef}
           placeholder="Busque em suas notas..."
           className="w-full bg-transparent text-3xl font-semibold tracking-tight outline-none placeholder:text-slate-500"
           onChange={handleSearch}
           value={search}
         />
+        <span className="absolute top-1/2 -translate-y-1/2 right-6 border border-slate-600 px-2 rounded-[4px] text-slate-300 pointer-events-none">
+          /
+        </span>
       </form>
 
       <div className="h-px bg-slate-700"></div>
