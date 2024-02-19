@@ -3,6 +3,7 @@ import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { X } from "lucide-react";
 import { useState } from "react";
+import ShortcutButtonSave from "./ui/ShortCutButtonSave";
 
 interface NoteCardProps {
   note: {
@@ -29,6 +30,14 @@ export function NoteCard({ note, onDeleteNote, onNoteEdited }: NoteCardProps) {
     editedTitle,
     editedContent,
   };
+
+  function handleSaveEditedNote() {
+    if (!open) return
+
+    onNoteEdited(note.id, noteEdited);
+    setOpen(false);
+    setIsEditing(false);
+  }
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
@@ -126,20 +135,17 @@ export function NoteCard({ note, onDeleteNote, onNoteEdited }: NoteCardProps) {
             {isEditing ? (
               <>
                 <button
-                  className="w-full border border-slate-950 py-4 text-center text-sm text-slate-200 outline-none font-medium rounded-md"
+                  className="w-full border border-slate-200 py-4 text-center text-sm text-slate-200 outline-none font-medium rounded-md"
                   onClick={() => setIsEditing(false)}
                 >
                   Cancelar
                 </button>
                 <button
-                  className="w-full bg-slate-100 py-4 text-center text-sm text-slate-950 outline-none font-medium group rounded-md"
-                  onClick={() => {
-                    onNoteEdited(note.id, noteEdited);
-                    setOpen(false);
-                    setIsEditing(false);
-                  }}
+                  className="w-full bg-slate-100 py-4 text-center text-sm text-slate-950 outline-none font-medium group rounded-md space-x-2"
+                  onClick={handleSaveEditedNote}
                 >
-                  Salvar
+                  <span className="align-middle">Salvar</span>
+                  <ShortcutButtonSave className="bg-slate-950 text-slate-100" onShortcutSave={handleSaveEditedNote}/>
                 </button>
               </>
             ) : (
