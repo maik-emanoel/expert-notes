@@ -116,7 +116,7 @@ export function App() {
           onChange={handleSearch}
           value={search}
         />
-        <span className="absolute top-1/2 -translate-y-1/2 right-6 border border-slate-600 px-2 rounded-[4px] text-slate-300 pointer-events-none">
+        <span className="hidden absolute top-1/2 -translate-y-1/2 right-6 border border-slate-600 px-2 rounded-[4px] text-slate-300 pointer-events-none md:block">
           /
         </span>
       </form>
