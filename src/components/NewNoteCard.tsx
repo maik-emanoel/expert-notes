@@ -2,6 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { toast } from "sonner";
+import ShortcutButtonSave from "./ui/ShortCutButtonSave";
 
 interface NewNoteCardProps {
   onNoteCreated: ({
@@ -95,6 +96,17 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
     }
   }
 
+  function handleShortcutSave() {
+    if (content === "" || !open) return;
+
+    onNoteCreated({ title, content });
+    toast.success("Nota criada com sucesso!");
+    setTitle("");
+    setContent("");
+    setShouldShowOnboarding(true);
+    setOpen(false)
+  }
+
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger className="rounded-md bg-slate-700 p-5 flex flex-col gap-3 text-left outline-none hover:ring-2 hover:ring-slate-400 focus-visible:ring-2 focus-visible:ring-lime-400">
@@ -180,9 +192,10 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
                   handleSaveNote(e);
                   setOpen(false);
                 }}
-                className="w-full bg-lime-400 py-4 text-center text-sm text-lime-950 outline-none font-medium hover:bg-lime-500"
+                className="w-full bg-lime-400 py-4 text-center text-sm text-lime-950 outline-none font-medium space-x-2 hover:bg-lime-500"
               >
-                Salvar nota
+                <span className="align-middle">Salvar nota</span>
+                <ShortcutButtonSave onShortcutSave={handleShortcutSave} />
               </button>
             )}
           </form>
