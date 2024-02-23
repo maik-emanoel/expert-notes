@@ -153,7 +153,7 @@ export function NoteCard({ note, onDeleteNote, onNoteEdited }: NoteCardProps) {
                 <button
                   type="button"
                   onClick={onDeleteNote}
-                  className="w-full py-4 text-center text-sm text-red-400 outline-none font-medium rounded-md border border-red-400 transition duration-200 hover:backdrop-brightness-75"
+                  className="w-full py-4 text-center text-sm text-red-50 bg-red-500 outline-none font-medium rounded-md transition duration-200 hover:brightness-110"
                 >
                   Deseja apagar essa nota?
                 </button>
@@ -161,7 +161,7 @@ export function NoteCard({ note, onDeleteNote, onNoteEdited }: NoteCardProps) {
                 <button
                   type="button"
                   onClick={() => setIsEditing(true)}
-                  className="w-full bg-slate-300 py-4 text-center text-sm text-slate-950 outline-none font-medium rounded-md transition duration-200 hover:brightness-125"
+                  className="w-full bg-slate-300 py-4 text-center text-sm text-slate-950 outline-none font-medium rounded-md transition duration-200 hover:bg-slate-200"
                 >
                   Editar nota
                 </button>
