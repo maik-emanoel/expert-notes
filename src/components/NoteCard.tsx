@@ -3,7 +3,7 @@ import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { X } from "lucide-react";
 import { useState } from "react";
-import ShortcutButtonSave from "./ui/ShortCutButtonSave";
+import ShortcutButtonSave from "./ui/ShortcutButtonSave";
 
 interface NoteCardProps {
   note: {

@@ -2,7 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { toast } from "sonner";
-import ShortcutButtonSave from "./ui/ShortCutButtonSave";
+import ShortcutButtonSave from "./ui/ShortcutButtonSave";
 
 interface NewNoteCardProps {
   onNoteCreated: ({
