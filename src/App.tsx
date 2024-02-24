@@ -24,6 +24,7 @@ export function App() {
   const [search, setSearch] = useState("");
   const [notes, setNotes] = useState<Note[]>(loadNotes());
   const inputSearchRef = useRef<null | HTMLInputElement>(null);
+  const [isInputFocused, setIsInputFocused] = useState(false)
 
   useEffect(() => {
     handleFocusInput();
@@ -89,6 +90,8 @@ export function App() {
     });
   }
 
+  console.log(isInputFocused)
+
   const filteredNotes =
     search !== ""
       ? notes.filter((note) => {
@@ -115,13 +118,15 @@ export function App() {
           className="w-full bg-transparent text-3xl font-semibold tracking-tight outline-none placeholder:text-slate-500"
           onChange={handleSearch}
           value={search}
+          onFocus={() => setIsInputFocused(true)}
+          onBlur={() => setIsInputFocused(false)}
         />
         <span className="hidden absolute top-1/2 -translate-y-1/2 right-6 border border-slate-600 px-2 rounded-[4px] text-slate-300 pointer-events-none md:block">
           /
         </span>
       </form>
 
-      <div className="h-px bg-slate-700"></div>
+      <div className={`h-px ${isInputFocused ? 'bg-slate-500' : 'bg-slate-700'}`} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[250px]">
         <NewNoteCard onNoteCreated={onNoteCreated} />
