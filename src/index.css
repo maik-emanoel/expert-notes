@@ -3,6 +3,19 @@
 @tailwind utilities;
 
 @layer base {
+  body::-webkit-scrollbar {
+    width: .6rem;
+  }
+
+  body::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, .1);
+    border-radius: 999px;
+  }
+
   .textarea-scrollbar::-webkit-scrollbar {
     width: 0.3rem;
   }
